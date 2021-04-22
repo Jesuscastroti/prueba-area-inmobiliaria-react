@@ -179,6 +179,45 @@ const editarArticulo = ()=>{
     }
    
 }
+
+//Funcion para eliminar el articulo
+const borrarArticulo = (id)=>{
+    Swal.fire({
+        title: '¿Estas seguro de eliminar el articulo?',
+        text: "Este proceso no se puede revertir!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si,eliminar!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+              API.DeleteArticulos(id)
+    .then((data) => data.json())
+        .then((dataJson) => {
+            if(dataJson.success === true){
+                Swal.fire({
+                    title: 'Eliminado!',
+                    text: 'Articulo eliminado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                  })
+                  listadoArticulos();
+            }else{
+                Swal.fire({
+                    title: 'Atención!',
+                    text: dataJson.message,
+                    icon: 'info',
+                  })
+            }
+        })
+        .catch((error) => {
+            console.log('Error ', error);
+        });  
+        }
+      })
+  
+}
     return(
         <>
             <table className="table table-hover">
@@ -207,7 +246,7 @@ const editarArticulo = ()=>{
                                                 <Button className="btn btn-warning" onClick={() => abrirModalEdit(articulo.id)}>Editar </Button>
                                             </div>
                                             <div className="col-lg-auto">
-                                                <button className="btn btn-danger">Eliminar </button>
+                                                <Button className="btn btn-danger" onClick={() => borrarArticulo(articulo.id)}>Eliminar </Button>
                                             </div>
                                         </div>
                                     </td>
@@ -218,7 +257,7 @@ const editarArticulo = ()=>{
                 </tbody>
             </table>
             <Modal show={show} onHide={cerrarModalAgregar} centered>
-                <Modal.Header closeButton>
+                <Modal.Header >
                     <Modal.Title>Agregar articulo</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -274,7 +313,7 @@ const editarArticulo = ()=>{
 
             {/**---------------Modal para editar articulo */}
             <Modal show={EditShow} onHide={cerrarModalEdit} centered>
-                <Modal.Header closeButton>
+                <Modal.Header>
                     <Modal.Title>Editar articulo</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>

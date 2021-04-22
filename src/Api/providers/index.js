@@ -55,6 +55,17 @@ class Api {
         })
         return query;
     }
+      //Eliminar los articulos
+      async DeleteArticulos(id){
+        const query = await fetch(`${URL_RUTA.DELETE_ARTICULOS+id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type'  : 'application/x-www-form-urlencoded',
+                'Authorization' : 'Bearer ' 
+            }
+        })
+        return query;
+    }
     
 
 }
