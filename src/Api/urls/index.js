@@ -11,6 +11,7 @@ const APP_URLS = {
 /**RUTAS PARA LOS ARTICULOS*/
     GET_ARTICULOS: `${PRODUCTION_URL}${API_URL}admin/articulos/getArticulos`,
     POST_ARTICULOS: `${PRODUCTION_URL}${API_URL}admin/articulos/addArticulos`,
+    PUT_ARTICULOS: `${PRODUCTION_URL}${API_URL}admin/articulos/editArticulos`,
 
 };
 
