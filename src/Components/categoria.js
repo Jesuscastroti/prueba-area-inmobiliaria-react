@@ -1,15 +1,44 @@
 import React, { useState,useEffect } from 'react';
+import { Button, Modal} from 'react-bootstrap';
+import {Input} from 'reactstrap';
 import Swal from 'sweetalert2';
 import API from '../Api/providers/index'
 const Tabla = ()=>{
- 
+    //VARIABLES PARA EL MODAL AGREGAR
+    const [nombreCategoria, setnombreCategoria] = useState('');
+    //VARIABLES PARA EL MODAL EDITAR
+    const [editIdCategoria, seteditIdCategoria] = useState('');
+    const [editNombreCategoria, seteditNombreCategoria] = useState('');
+    //VARIABLES PARA ABRIR Y CERRAR MODAL AGREGAR
+    const [show, setShow] = useState(false);
+    const cerrarModalAgregar = () => setShow(false);
+    const abrirModal = () => setShow(true);
+    //VARIABLES PARA ABRIR Y CERRAR MODAL EDITAR
+    const [EditShow, setEditShow] = useState(false);
+    const cerrarModalEdit = () => setEditShow(false);
+    const abrirModalEdit = (id) =>{
+        setEditShow(true);
+        seteditIdCategoria(id)
+    } 
     //Variables
     const [arrayCategoria,setArrayCategoria] = useState([]);
     //HOOK 
     useEffect(() => {
         listadoCategorias();
       }, []);
-   
+    //ONCHANGE DE LOS INPUT DE MODAL AGREGAR ARTICULOS
+    const inputChangeNombreCategoria=(e)=>{
+        const { target: { value = '' } = {} } = { ...e };
+        setnombreCategoria(value)
+  
+    }
+       //ONCHANGE DE LOS INPUT DE MODAL EDITAR ARTICULOS
+       const inputChangeEditNombreCategoria=(e)=>{
+        const { target: { value = '' } = {} } = { ...e };
+        seteditNombreCategoria(value);
+      }
+     //---------Funciones para accionar las api---------------
+     //--Obtener el listado de categorias---------
     const listadoCategorias = () =>{
         API.GetCategorias()
         .then((data) => data.json())
@@ -21,14 +50,77 @@ const Tabla = ()=>{
             console.log('Error ', error);
         });  
     }
-    const alerta = ()=>{
+// Funcion para agregar los articulos
+const agregarCategoria = ()=>{
+    if(nombreCategoria === ''){
         Swal.fire({
-            title: 'Eliminado!',
-            text: 'Dato eliminado correctamente',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
+            title: 'Atención!',
+            text: 'El nombre de la categoria no puede estar vacio',
+            icon: 'info',
           })
+    }else{
+        API.PostCategorias(nombreCategoria)
+        .then((data) => data.json())
+        .then((dataJson) => {
+            if(dataJson.success === true){
+                Swal.fire({
+                    title: 'Guardado!',
+                    text: 'Categoria agregada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                  })
+                  listadoCategorias();
+                  cerrarModalAgregar(true);
+            }else{
+                Swal.fire({
+                    title: 'Atención!',
+                    text: dataJson.message,
+                    icon: 'info',
+                  })
+            }
+        })
+        .catch((error) => {
+            console.log('Error ', error);
+        });  
+        
     }
+}
+// Funcion para editar los articulos
+const editarCategoria = ()=>{
+    if(editNombreCategoria === ''){
+        Swal.fire({
+            title: 'Atención!',
+            text: 'El nombre de la categoria no puede estar vacio',
+            icon: 'info',
+          })
+    }else{
+        API.PutCategorias(editNombreCategoria,editIdCategoria)
+        .then((data) => data.json())
+        .then((dataJson) => {
+            if(dataJson.success === true){
+                Swal.fire({
+                    title: 'Actualizado!',
+                    text: 'Categoria actualizada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                  })
+                  listadoCategorias();
+                  cerrarModalEdit(true);
+            }else{
+                Swal.fire({
+                    title: 'Atención!',
+                    text: dataJson.message,
+                    icon: 'info',
+                  })
+            }
+        })
+        .catch((error) => {
+            console.log('Error ', error);
+        });  
+        
+    }
+   
+}
 
     return(
         <>
@@ -37,7 +129,7 @@ const Tabla = ()=>{
                     <tr>
                     <th >#</th>
                     <th >Nombre categoria</th>
-                    <th ><button className="btn btn-success">Agregar </button></th>
+                    <th ><Button color="info" onClick={abrirModal}>Agregar </Button></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,7 +143,7 @@ const Tabla = ()=>{
                                     <td>
                                         <div className="row">
                                             <div className="col-lg-auto">
-                                                <button className="btn btn-warning">Editar </button>
+                                                <Button className="btn btn-warning" onClick={() => abrirModalEdit(categoria.id)}>Editar </Button>
                                             </div>
                                             <div className="col-lg-auto">
                                             <button className="btn btn-danger">Eliminar </button>
@@ -66,6 +158,65 @@ const Tabla = ()=>{
                    
                 </tbody>
             </table>
+            {/*---------Modal para agregar categoria */}
+            <Modal show={show} onHide={cerrarModalAgregar} centered>
+                <Modal.Header >
+                    <Modal.Title>Agregar categoria</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                       <div className="row">
+                           <div className="col-lg-6">
+                               <label>Nombre categoria</label>
+                           </div>
+                           <div className="col-lg-6">
+                                <Input
+                                    value={nombreCategoria}
+                                    type="text"
+                                    maxLength={50}
+                                    onChange={inputChangeNombreCategoria}
+                                />
+                           </div>
+                       </div>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={cerrarModalAgregar}>
+                    Cerrar
+                </Button>
+                <Button variant="primary" onClick={()=>agregarCategoria()}>
+                   Guardar cambios
+                </Button>
+                </Modal.Footer>
+            </Modal>
+              {/**---------------Modal para editar categoria*/}
+              <Modal show={EditShow} onHide={cerrarModalEdit} centered>
+                <Modal.Header>
+                    <Modal.Title>Editar categoria</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                       <div className="row">
+                           <div className="col-lg-6">
+                               <label>Nombre categoria</label>
+                           </div>
+                           <div className="col-lg-6">
+                                <Input
+                                    value={editNombreCategoria}
+                                    type="text"
+                                    maxLength={10}
+                                    onChange={inputChangeEditNombreCategoria}
+                                />
+                           </div>
+                       </div>
+                      
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={cerrarModalEdit}>
+                    Cerrar
+                </Button>
+                <Button variant="primary" onClick={()=>editarCategoria()}>
+                   Guardar cambios
+                </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }

@@ -8,6 +8,8 @@ const API_URL = 'api/v1/';
 const APP_URLS = {
   /**RUTAS PARA LAS CATEGORIAS*/
   GET_CATEGORIAS: `${PRODUCTION_URL}${API_URL}admin/categorias/getCategorias`,
+  POST_CATEGORIAS: `${PRODUCTION_URL}${API_URL}admin/categorias/addCategorias`,
+  PUT_CATEGORIAS: `${PRODUCTION_URL}${API_URL}admin/categorias/editCategorias`,
 /**RUTAS PARA LOS ARTICULOS*/
     GET_ARTICULOS: `${PRODUCTION_URL}${API_URL}admin/articulos/getArticulos`,
     POST_ARTICULOS: `${PRODUCTION_URL}${API_URL}admin/articulos/addArticulos`,

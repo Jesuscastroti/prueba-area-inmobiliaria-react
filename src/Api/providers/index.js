@@ -2,7 +2,7 @@ import URL_RUTA from  '../urls/index';
 
 class Api {
    
-/*CATEGORIAS */
+    /*----------CATEGORIAS ------------------*/
     async GetCategorias(){
         const query = await fetch(`${URL_RUTA.GET_CATEGORIAS}`, {
             method: 'GET',
@@ -12,7 +12,36 @@ class Api {
         })
         return query;
     }
-    /*ARTICULOS */
+    //Agregar las categorias
+    async PostCategorias(nombreCategoria){
+        let formdata = new URLSearchParams();
+        formdata.append('nombreCategoria', nombreCategoria);
+        const query = await fetch(`${URL_RUTA.POST_CATEGORIAS}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type'  : 'application/x-www-form-urlencoded',
+                'Authorization' : 'Bearer ' 
+            },
+            body: formdata
+        })
+        return query;
+    }
+    //editar las categorias
+    async PutCategorias(nombreCategoria,id){
+        let formdata = new URLSearchParams();
+        formdata.append('nombreCategoria', nombreCategoria);
+        formdata.append('id', id);
+        const query = await fetch(`${URL_RUTA.PUT_CATEGORIAS}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type'  : 'application/x-www-form-urlencoded',
+                'Authorization' : 'Bearer ' 
+            },
+            body: formdata
+        })
+        return query;
+    }
+    /*--------ARTICULOS----------- */
     async GetArticulos(){
         const query = await fetch(`${URL_RUTA.GET_ARTICULOS}`, {
             method: 'GET',
