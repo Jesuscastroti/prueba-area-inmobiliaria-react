@@ -16,9 +16,10 @@ const Tabla = ()=>{
     //VARIABLES PARA ABRIR Y CERRAR MODAL EDITAR
     const [EditShow, setEditShow] = useState(false);
     const cerrarModalEdit = () => setEditShow(false);
-    const abrirModalEdit = (id) =>{
+    const abrirModalEdit = (id,nombrecat) =>{
         setEditShow(true);
-        seteditIdCategoria(id)
+        seteditIdCategoria(id);
+        seteditNombreCategoria(nombrecat);
     } 
     //Variables
     const [arrayCategoria,setArrayCategoria] = useState([]);
@@ -181,7 +182,7 @@ const borrarCategoria = (id)=>{
                                     <td>
                                         <div className="row">
                                             <div className="col-lg-auto">
-                                                <Button className="btn btn-warning" onClick={() => abrirModalEdit(categoria.id)}>Editar </Button>
+                                                <Button className="btn btn-warning" onClick={() => abrirModalEdit(categoria.id,categoria.nombre_categoria)}>Editar </Button>
                                             </div>
                                             <div className="col-lg-auto">
                                                 <Button className="btn btn-danger" onClick={() => borrarCategoria(categoria.id)}>Eliminar </Button>

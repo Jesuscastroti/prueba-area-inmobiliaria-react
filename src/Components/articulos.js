@@ -20,9 +20,12 @@ const Articulos = ()=>{
     //VARIABLES PARA ABRIR Y CERRAR MODAL EDITAR
     const [EditShow, setEditShow] = useState(false);
     const cerrarModalEdit = () => setEditShow(false);
-    const abrirModalEdit = (id) =>{
+    const abrirModalEdit = (id,numero,nombre,descripcion) =>{
         setEditShow(true);
-        seteditIdArticulo(id)
+        seteditIdArticulo(id);
+        seteditNumeroRegistro(numero);
+        seteditNombre(nombre);
+        seteditDescripcion(descripcion);
     } 
     //ARRAY PARA LISTAR LOS ARTICULOS
     const [arrayArticulos,setArrayArticulos] = useState([]);
@@ -223,11 +226,11 @@ const borrarArticulo = (id)=>{
             <table className="table table-hover">
                 <thead>
                     <tr>
-                    <th >#</th>
-                    <th >Numero registro</th>
-                    <th >Nombre</th>
-                    <th >Descripcion</th>
-                    <th ><Button color="info" onClick={abrirModal}>Agregar </Button></th>
+                        <th >#</th>
+                        <th >Numero registro</th>
+                        <th >Nombre</th>
+                        <th >Descripcion</th>
+                        <th ><Button color="info" onClick={abrirModal}>Agregar </Button></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -243,7 +246,7 @@ const borrarArticulo = (id)=>{
                                     <td>
                                         <div className="row">
                                             <div className="col-lg-auto">
-                                                <Button className="btn btn-warning" onClick={() => abrirModalEdit(articulo.id)}>Editar </Button>
+                                                <Button className="btn btn-warning" onClick={() => abrirModalEdit(articulo.id,articulo.numero_registro,articulo.nombre,articulo.descripcion)}>Editar </Button>
                                             </div>
                                             <div className="col-lg-auto">
                                                 <Button className="btn btn-danger" onClick={() => borrarArticulo(articulo.id)}>Eliminar </Button>
