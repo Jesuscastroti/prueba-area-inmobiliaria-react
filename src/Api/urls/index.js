@@ -10,6 +10,7 @@ const APP_URLS = {
   GET_CATEGORIAS: `${PRODUCTION_URL}${API_URL}admin/categorias/getCategorias`,
   POST_CATEGORIAS: `${PRODUCTION_URL}${API_URL}admin/categorias/addCategorias`,
   PUT_CATEGORIAS: `${PRODUCTION_URL}${API_URL}admin/categorias/editCategorias`,
+  DELETE_CATEGORIAS: `${PRODUCTION_URL}${API_URL}admin/categorias/deleteCategorias/`,
 /**RUTAS PARA LOS ARTICULOS*/
     GET_ARTICULOS: `${PRODUCTION_URL}${API_URL}admin/articulos/getArticulos`,
     POST_ARTICULOS: `${PRODUCTION_URL}${API_URL}admin/articulos/addArticulos`,

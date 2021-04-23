@@ -50,7 +50,7 @@ const Tabla = ()=>{
             console.log('Error ', error);
         });  
     }
-// Funcion para agregar los articulos
+// Funcion para agregar las categorias
 const agregarCategoria = ()=>{
     if(nombreCategoria === ''){
         Swal.fire({
@@ -85,7 +85,7 @@ const agregarCategoria = ()=>{
         
     }
 }
-// Funcion para editar los articulos
+// Funcion para editar las categorias
 const editarCategoria = ()=>{
     if(editNombreCategoria === ''){
         Swal.fire({
@@ -121,6 +121,44 @@ const editarCategoria = ()=>{
     }
    
 }
+//Funcion para eliminar la categoria
+const borrarCategoria = (id)=>{
+    Swal.fire({
+        title: '¿Estas seguro de eliminar la categoria?',
+        text: "Este proceso no se puede revertir!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si,eliminar!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            API.DeleteCategorias(id)
+            .then((data) => data.json())
+            .then((dataJson) => {
+            if(dataJson.success === true){
+                Swal.fire({
+                    title: 'Eliminado!',
+                    text: 'Categoria eliminada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                  })
+                  listadoCategorias();
+            }else{
+                Swal.fire({
+                    title: 'Atención!',
+                    text: dataJson.message,
+                    icon: 'info',
+                  })
+            }
+        })
+        .catch((error) => {
+            console.log('Error ', error);
+        });  
+        }
+      })
+  
+}
 
     return(
         <>
@@ -146,7 +184,7 @@ const editarCategoria = ()=>{
                                                 <Button className="btn btn-warning" onClick={() => abrirModalEdit(categoria.id)}>Editar </Button>
                                             </div>
                                             <div className="col-lg-auto">
-                                            <button className="btn btn-danger">Eliminar </button>
+                                                <Button className="btn btn-danger" onClick={() => borrarCategoria(categoria.id)}>Eliminar </Button>
                                             </div>
                                         </div>
                                     </td>

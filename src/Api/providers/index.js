@@ -41,6 +41,17 @@ class Api {
         })
         return query;
     }
+    //Eliminar las categorias
+    async DeleteCategorias(id){
+        const query = await fetch(`${URL_RUTA.DELETE_CATEGORIAS+id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type'  : 'application/x-www-form-urlencoded',
+                'Authorization' : 'Bearer ' 
+            }
+        })
+        return query;
+    }
     /*--------ARTICULOS----------- */
     async GetArticulos(){
         const query = await fetch(`${URL_RUTA.GET_ARTICULOS}`, {
